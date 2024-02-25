@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>JSON Data Table</title>
+</head>
+<body>
+
+<table id="placesTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Info</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('https://api.npoint.io/7bbd3a59c401f616bb89')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#placesTable tbody');
+                data.places.forEach(place => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = place.name;
+                    row.insertCell(1).textContent = place.info;
+                    const imageCell = row.insertCell(2);
+                    const image = document.createElement('img');
+                    image.src = place.image;
+                    image.alt = place.name;
+                    imageCell.appendChild(image);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
+</script>
+
+</body>
+</html>
